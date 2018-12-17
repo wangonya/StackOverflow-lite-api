@@ -25,7 +25,8 @@ def post_question():
         question = {
             'id': q_id,
             'title': title,
-            'body': body
+            'body': body,
+            'by': 'test_user'
         }
         qs.append(question)
         return jsonify({'question': question}), 201
