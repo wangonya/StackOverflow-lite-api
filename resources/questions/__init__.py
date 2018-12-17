@@ -25,7 +25,17 @@ def post_question():
         question = {
             'id': q_id,
             'title': title,
-            'body': body
+            'body': body,
+            'by': 'test_user'
         }
         qs.append(question)
         return jsonify({'question': question}), 201
+
+
+@questions.route('/api/v1/questions/<int:q_id>', methods=['DELETE'])
+def delete_question(q_id):
+    question = [q for q in qs if q['id'] == q_id]
+    if len(question) == 0:
+        return jsonify({'msg': 'question with id {} does not exist'.format(q_id)})
+    qs.remove(question[0])
+    return jsonify({'msg': 'question with id {} deleted successfully'.format(q_id)})
