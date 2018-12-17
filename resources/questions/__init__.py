@@ -4,6 +4,11 @@ questions = Blueprint('questions', __name__)
 qs = []
 
 
+@questions.route('/api/v1/questions', methods=['GET'])
+def get_questions():
+    return jsonify({'questions': qs}), 200
+
+
 @questions.route('/api/v1/questions', methods=['POST'])
 def post_question():
     # make sure there's data and its properly formatted
