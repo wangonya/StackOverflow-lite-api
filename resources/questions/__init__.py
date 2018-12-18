@@ -74,3 +74,26 @@ def post_answer(q_id):
         ans.append(answer)
         question[0]['answers'] = ans
         return jsonify({'answer':  answer}), 201
+
+
+@questions.route('/api/v1/questions/<int:q_id>/answers/<int:a_id>', methods=['PUT'])
+def accept_answer(q_id, a_id):
+    question = [q for q in qs if q['id'] == q_id]
+    if len(question) == 0:
+        return jsonify({'msg': 'question with id {} does not exist'.format(q_id)})
+
+    answer = [a for a in question[0]['answers'] if a['id'] == a_id]
+    if len(answer) == 0:
+        return jsonify({'msg': 'answer with id {} does not exist'.format(a_id)})
+
+    if 'accepted' in question[0]['answers']:
+        return jsonify({'msg': 'question with id {} already has an accepted answer'.format(q_id)})
+
+    # make sure there's data and its properly formatted
+    if None or not request.json:
+        abort(400)
+
+    accepted = request.json['accepted']
+
+    answer[0]['accepted'] = accepted
+    return jsonify({'answer':  answer}), 201
